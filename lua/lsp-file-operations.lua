@@ -152,6 +152,7 @@ end
 
 --- The extra client capabilities provided by this plugin. To be merged with
 --- vim.lsp.protocol.make_client_capabilities() and sent to the LSP server.
+--- Handled via vim.lsp.config on 0.11+
 M.default_capabilities = function()
   local config = M.config or default_config
   local result = {
@@ -163,6 +164,13 @@ M.default_capabilities = function()
     result.workspace.fileOperations[capability] = config.operations[operation]
   end
   return result
+end
+
+-- Set default capabilities
+if vim.fn.has("nvim-0.11") == 1 and vim.lsp.config then
+  vim.lsp.config("*", {
+    capabilities = M.default_capabilities(),
+  })
 end
 
 return M
