@@ -123,18 +123,18 @@ M.setup = function(opts)
 
     ---@type HandlerMap
     local events = {
-      willRenameFiles = { 'TriptychWillMoveNode' },
-      didRenameFiles = { 'TriptychDidMoveNode' },
-      willCreateFiles = { 'TriptychWillCreateNode' },
-      didCreateFiles = { 'TriptychDidCreateNode' },
-      willDeleteFiles = { 'TriptychWillDeleteNode' },
-      didDeleteFiles = { 'TriptychDidDeleteNode' },
+      willRenameFiles = { "TriptychWillMoveNode" },
+      didRenameFiles = { "TriptychDidMoveNode" },
+      willCreateFiles = { "TriptychWillCreateNode" },
+      didCreateFiles = { "TriptychDidCreateNode" },
+      willDeleteFiles = { "TriptychWillDeleteNode" },
+      didDeleteFiles = { "TriptychDidDeleteNode" },
     }
     setup_events(events, function(module, event)
-      vim.api.nvim_create_autocmd('User', {
-        group = 'TriptychEvents',
+      vim.api.nvim_create_autocmd("User", {
+        group = "TriptychEvents",
         pattern = event,
-        callback = function (callback_data)
+        callback = function(callback_data)
           local args = {}
           local data = callback_data.data
           if data.from_path and data.to_path then
@@ -156,8 +156,8 @@ M.default_capabilities = function()
   local config = M.config or default_config
   local result = {
     workspace = {
-      fileOperations = {}
-    }
+      fileOperations = {},
+    },
   }
   for operation, capability in pairs(capabilities) do
     result.workspace.fileOperations[capability] = config.operations[operation]
