@@ -4,6 +4,14 @@
 support](https://neovim.io/doc/user/lsp.html).
 This plugin works by subscribing to events emitted by [nvim-tree](https://github.com/nvim-tree/nvim-tree.lua), [neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim) and [triptych](https://github.com/simonmclean/triptych.nvim). But other integrations are possible.
 
+## Notable changes
+
+This is a fork.
+
+- Fix some deprecation warnings <https://github.com/antosha417/nvim-lsp-file-operations/pull/34>
+- Requires neovim 0.10+
+- Automatically sets up LSP capabilities on neovim 0.11+
+
 ## Features
 
 Full implementation of all [`workspace.fileOperations`](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/) in the current lsp spec:
@@ -15,7 +23,7 @@ Full implementation of all [`workspace.fileOperations`](https://microsoft.github
 - [workspace/WillDelete](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#workspace_willDeleteFiles)
 - [workspace/DidDelete](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#workspace_didDeleteFiles)
 
-https://user-images.githubusercontent.com/14187674/211327507-39f21a74-0a43-43f0-ba3e-91109125286c.mp4
+<https://user-images.githubusercontent.com/14187674/211327507-39f21a74-0a43-43f0-ba3e-91109125286c.mp4>
 
 **If you have usecases for any other operations please open an issue.**
 
@@ -24,7 +32,7 @@ https://user-images.githubusercontent.com/14187674/211327507-39f21a74-0a43-43f0-
 ### Using [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
 ```lua
-use {
+use({
   "antosha417/nvim-lsp-file-operations",
   requires = {
     "nvim-lua/plenary.nvim",
@@ -36,7 +44,7 @@ use {
   config = function()
     require("lsp-file-operations").setup()
   end,
-}
+})
 ```
 
 ### Using [lazy.nvim](https://github.com/folke/lazy.nvim)
@@ -49,10 +57,10 @@ return {
     "antosha417/nvim-lsp-file-operations",
     dependencies = {
       "nvim-lua/plenary.nvim",
-    -- Uncomment whichever supported plugin(s) you use
-    -- "nvim-tree/nvim-tree.lua",
-    -- "nvim-neo-tree/neo-tree.nvim",
-    -- "simonmclean/triptych.nvim"
+      -- Uncomment whichever supported plugin(s) you use
+      -- "nvim-tree/nvim-tree.lua",
+      -- "nvim-neo-tree/neo-tree.nvim",
+      -- "simonmclean/triptych.nvim"
     },
     config = function()
       require("lsp-file-operations").setup()
@@ -74,7 +82,7 @@ require("lsp-file-operations").setup()
 This is equivalent to:
 
 ```lua
-require("lsp-file-operations").setup {
+require("lsp-file-operations").setup({
   -- used to see debug logs in file `vim.fn.stdpath("cache") .. lsp-file-operations.log`
   debug = false,
   -- select which file operations to enable
@@ -88,29 +96,7 @@ require("lsp-file-operations").setup {
   },
   -- how long to wait (in milliseconds) for file rename information before cancelling
   timeout_ms = 10000,
-}
-```
-Some LSP servers also expect to be informed about the extended client capabilities.
-If you use [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) you can configure the default client capabilities that will
-be sent to all servers like this:
-
-```lua
-local lspconfig = require'lspconfig'
-
--- Set global defaults for all servers
-lspconfig.util.default_config = vim.tbl_extend(
-  'force',
-  lspconfig.util.default_config,
-  {
-    capabilities = vim.tbl_deep_extend(
-      "force",
-      vim.lsp.protocol.make_client_capabilities(),
-      -- returns configured operations if setup() was already called
-      -- or default operations if not
-      require'lsp-file-operations'.default_capabilities(),
-    )
-  }
-)
+})
 ```
 
 ## Contributing
